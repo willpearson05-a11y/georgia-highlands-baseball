@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Georgia Highlands Baseball Analytics</title>
+<script src="config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Anton&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { overflow-x: hidden; }
+body {
+font-family: 'Barlow', sans-serif;
+background: #001030;
+min-height: 100vh;
+width: 100%;
+overflow-x: hidden;
+padding: 20px 14px 48px;
+}
+.card {
+background: #F58025;
+border-radius: 28px;
+overflow: hidden;
+max-width: 560px;
+margin: 0 auto;
+box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+.masthead {
+padding: 20px 24px 20px;
+text-align: center;
+background: #F58025;
+}
+.season-badge {
+font-family: 'Barlow', sans-serif;
+font-size: 9px;
+letter-spacing: 3px;
+color: #7a6820;
+text-transform: uppercase;
+margin-top: 8px;
+}
+.site-title {
+font-family: 'Abril Fatface', serif;
+font-size: clamp(52px, 13vw, 68px);
+color: #002D72;
+line-height: 0.9;
+letter-spacing: 1px;
+}
+.rule-wrap {
+margin: 14px 0 10px;
+display: flex;
+flex-direction: column;
+gap: 3px;
+}
+.rule-thick { height: 3px; background: #002D72; border-radius: 1px; }
+.rule-thin  { height: 1px; background: #002D72; }
+.stats-bar {
+display: flex;
+border: 1px solid #002D72;
+margin: 0 24px 24px;
+border-radius: 2px;
+}
+.stat-item {
+flex: 1;
+padding: 12px 8px;
+text-align: center;
+border-right: 1px solid #002D72;
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+font-family: 'Anton', sans-serif;
+font-size: clamp(24px, 6vw, 30px);
+color: #002D72;
+display: block;
+line-height: 1;
+}
+.stat-lbl {
+font-family: 'Barlow', sans-serif;
+font-size: 8px;
+color: #7a6820;
+text-transform: uppercase;
+letter-spacing: 2px;
+margin-top: 3px;
+display: block;
+}
+.section {
+background: #002D72;
+padding: 5px 24px;
+}
+.section-label {
+font-family: 'Anton', sans-serif;
+font-size: 11px;
+letter-spacing: 4px;
+text-transform: uppercase;
+color: #F58025;
+}
+.tool-list {
+padding: 6px 20px 10px;
+background: #F58025;
+}
+.tool-card {
+display: flex;
+align-items: center;
+padding: 14px 4px;
+gap: 14px;
+text-decoration: none;
+border-bottom: 1px solid #b89e2a;
+-webkit-tap-highlight-color: transparent;
+-webkit-transition: background 0.1s;
+transition: background 0.1s;
+border-radius: 4px;
+}
+.tool-card:last-child { border-bottom: none; }
+.tool-card:active { background: rgba(0,0,0,0.08); }
+.tool-icon {
+width: 48px;
+height: 48px;
+border: 1px solid #002D72;
+border-radius: 4px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 24px;
+flex-shrink: 0;
+background: rgba(255,255,255,0.3);
+}
+.tool-info { flex: 1; min-width: 0; }
+.tool-name {
+font-family: 'Anton', sans-serif;
+font-size: 16px;
+color: #002D72;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+line-height: 1.1;
+}
+.tool-desc {
+font-family: 'Barlow', sans-serif;
+font-size: 12px;
+color: #5a4a10;
+margin-top: 3px;
+font-style: italic;
+line-height: 1.3;
+}
+.tool-badge {
+font-family: 'Barlow', sans-serif;
+font-size: 9px;
+font-weight: 700;
+letter-spacing: 1px;
+text-transform: uppercase;
+padding: 3px 9px;
+border: 1px solid #002D72;
+color: #002D72;
+background: transparent;
+flex-shrink: 0;
+border-radius: 2px;
+}
+.card-footer {
+background: #002D72;
+padding: 16px 24px 20px;
+text-align: center;
+}
+.card-footer p {
+font-family: 'Barlow', sans-serif;
+font-size: 8px;
+color: #4a6a8a;
+letter-spacing: 2px;
+text-transform: uppercase;
+line-height: 2;
+}
+.footer-title {
+font-family: 'Abril Fatface', serif;
+font-size: 22px;
+color: #F58025;
+opacity: 0.12;
+margin-top: 10px;
+letter-spacing: 2px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="masthead">
+    <div class="site-title">Baseball</div>
+    <div class="season-badge">2026-27 Season · Georgia Highlands Chargers</div>
+    <div class="rule-wrap">
+      <div class="rule-thick"></div>
+      <div class="rule-thin"></div>
+    </div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-num" id="dbPitches">—</span>
+      <span class="stat-lbl">Pitches</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="dbGames">—</span>
+      <span class="stat-lbl">Games</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="dbPitchers">—</span>
+      <span class="stat-lbl">Pitchers</span>
+    </div>
+  </div>
+
+  <!-- Data -->
+
+  <div class="section"><div class="section-label">Data</div></div>
+  <div class="tool-list">
+    <a href="ghc_csv_uploader.html" class="tool-card">
+      <div class="tool-icon">⬆️</div>
+      <div class="tool-info">
+        <div class="tool-name">TrackMan Data Files</div>
+        <div class="tool-desc">Upload game CSVs to the database with display name tagging</div>
+      </div>
+      <span class="tool-badge">Live</span>
+    </a>
+  </div>
+
+  <!-- Game Reports -->
+
+  <div class="section"><div class="section-label">Game Reports</div></div>
+  <div class="tool-list">
+    <a href="ghc-game-summary.html" class="tool-card">
+      <div class="tool-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path d="M6 3 H18 L23 8 V25 H6 Z" stroke="#002D72" stroke-width="1.7" stroke-linejoin="round" fill="none"/>
+          <path d="M18 3 V8 H23" stroke="#002D72" stroke-width="1.3" stroke-linejoin="round" fill="none"/>
+          <line x1="10" y1="13" x2="19" y2="13" stroke="#002D72" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="10" y1="17" x2="19" y2="17" stroke="#002D72" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="10" y1="21" x2="15" y2="21" stroke="#002D72" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Full Game Summary</div>
+        <div class="tool-desc">One-page Excel report — every pitcher &amp; hitter, color-coded</div>
+      </div>
+      <span class="tool-badge">Live</span>
+    </a>
+    <a href="pitcher-report.html" class="tool-card">
+      <div class="tool-icon">
+        <svg width="30" height="30" viewBox="0 0 52 52" fill="none">
+          <circle cx="26" cy="26" r="22" fill="#002D72"/>
+          <path d="M15 10 C22 18, 22 34, 15 42" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M37 10 C30 18, 30 34, 37 42" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Pitcher Game Summary</div>
+        <div class="tool-desc">Single-game pitch locations, movement, velocity & pitch breakdown</div>
+      </div>
+      <span class="tool-badge">Live</span>
+    </a>
+    <a href="hitter-report.html" class="tool-card">
+      <div class="tool-icon">
+        <svg width="34" height="34" viewBox="0 0 56 56" fill="none">
+          <g transform="rotate(-45, 28, 28)">
+            <path d="M21 6 Q21 1, 28 1 Q35 1, 35 6 L33 28 L23 28 Z" stroke="#002D72" stroke-width="1.6" fill="none" stroke-linejoin="round"/>
+            <path d="M33 28 L30.5 40 M23 28 L25.5 40" stroke="#002D72" stroke-width="1.6" stroke-linecap="round"/>
+            <line x1="25.5" y1="40" x2="30.5" y2="40" stroke="#002D72" stroke-width="1.6"/>
+            <line x1="25.5" y1="40" x2="25.5" y2="48" stroke="#002D72" stroke-width="1.6"/>
+            <line x1="30.5" y1="40" x2="30.5" y2="48" stroke="#002D72" stroke-width="1.6"/>
+            <line x1="25.5" y1="42.5" x2="30.5" y2="42.5" stroke="#002D72" stroke-width="1"/>
+            <line x1="25.5" y1="45" x2="30.5" y2="45" stroke="#002D72" stroke-width="1"/>
+            <path d="M24 48 Q24 51, 28 51 Q32 51, 32 48 Z" stroke="#002D72" stroke-width="1.6" fill="none"/>
+          </g>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Hitter Game Summary</div>
+        <div class="tool-desc">Single-game plate discipline, spray chart & pitch sequencing</div>
+      </div>
+      <span class="tool-badge">Live</span>
+    </a>
+    <a href="catcher-framing.html" class="tool-card">
+      <div class="tool-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path d="M4 6 H24 V18 L14 25 L4 18 Z" stroke="#002D72" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Catcher Game Summary</div>
+        <div class="tool-desc">Stolen strikes, lost strikes & framing runs by catcher</div>
+      </div>
+      <span class="tool-badge">Live</span>
+    </a>
+    <a href="umpire-scorecard.html" class="tool-card">
+      <div class="tool-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect x="4" y="3" width="16" height="16" stroke="#002D72" stroke-width="1.6" fill="none"/>
+          <line x1="4" y1="8.3" x2="20" y2="8.3" stroke="#002D72" stroke-width="1"/>
+          <line x1="4" y1="13.6" x2="20" y2="13.6" stroke="#002D72" stroke-width="1"/>
+          <line x1="9.3" y1="3" x2="9.3" y2="19" stroke="#002D72" stroke-width="1"/>
+          <line x1="14.6" y1="3" x2="14.6" y2="19" stroke="#002D72" stroke-width="1"/>
+          <path d="M4 19 L12 25 L20 19" stroke="#002D72" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Umpire Game Summary</div>
+        <div class="tool-desc">Single-game called strike accuracy & RE24 run impact</div>
+      </div>
+      <span class="tool-badge">Live</span>
+    </a>
+  </div>
+
+  <!-- Season Reports -->
+
+  <div class="section"><div class="section-label">Season Reports</div></div>
+  <div class="tool-list">
+    <a href="ghc-season-hitting.html" class="tool-card">
+      <div class="tool-icon">
+        <svg width="34" height="34" viewBox="0 0 56 56" fill="none">
+          <g transform="rotate(-45, 28, 28)">
+            <path d="M21 6 Q21 1, 28 1 Q35 1, 35 6 L33 28 L23 28 Z" stroke="#002D72" stroke-width="1.6" fill="none" stroke-linejoin="round"/>
+            <path d="M33 28 L30.5 40 M23 28 L25.5 40" stroke="#002D72" stroke-width="1.6" stroke-linecap="round"/>
+            <line x1="25.5" y1="40" x2="30.5" y2="40" stroke="#002D72" stroke-width="1.6"/>
+            <line x1="25.5" y1="40" x2="25.5" y2="48" stroke="#002D72" stroke-width="1.6"/>
+            <line x1="30.5" y1="40" x2="30.5" y2="48" stroke="#002D72" stroke-width="1.6"/>
+            <line x1="25.5" y1="42.5" x2="30.5" y2="42.5" stroke="#002D72" stroke-width="1"/>
+            <line x1="25.5" y1="45" x2="30.5" y2="45" stroke="#002D72" stroke-width="1"/>
+            <path d="M24 48 Q24 51, 28 51 Q32 51, 32 48 Z" stroke="#002D72" stroke-width="1.6" fill="none"/>
+          </g>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Season Hitting Summary</div>
+        <div class="tool-desc">Multi-game stat lines, heat maps & plate discipline by hitter</div>
+      </div>
+      <span class="tool-badge">Live</span>
+    </a>
+    <a href="ghc-season-pitching.html" class="tool-card">
+      <div class="tool-icon">
+        <svg width="30" height="30" viewBox="0 0 52 52" fill="none">
+          <circle cx="26" cy="26" r="22" fill="#002D72"/>
+          <path d="M15 10 C22 18, 22 34, 15 42" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M37 10 C30 18, 30 34, 37 42" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Season Pitching Summary</div>
+        <div class="tool-desc">Multi-game pitch mix, velo, whiff zones & arsenal breakdown</div>
+      </div>
+      <span class="tool-badge">Live</span>
+    </a>
+  </div>
+
+
+  <!-- Scouting -->
+
+  <div class="section"><div class="section-label">Scouting</div></div>
+  <div class="tool-list">
+    <a href="opposing-pitcher-scout.html" class="tool-card">
+      <div class="tool-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="12" cy="12" r="7" stroke="#002D72" stroke-width="1.7" fill="none"/>
+          <circle cx="12" cy="12" r="3.5" stroke="#002D72" stroke-width="1" fill="none"/>
+          <line x1="17" y1="17" x2="24" y2="24" stroke="#002D72" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="12" y1="5" x2="12" y2="3" stroke="#002D72" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="12" y1="19" x2="12" y2="21" stroke="#002D72" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="5" y1="12" x2="3" y2="12" stroke="#002D72" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="19" y1="12" x2="21" y2="12" stroke="#002D72" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Opposing Pitcher Scout</div>
+        <div class="tool-desc">Arsenal, count tendencies &amp; locations for pitchers Georgia Highlands has faced</div>
+      </div>
+      <span class="tool-badge">Live</span>
+    </a>
+  </div>
+
+  <!-- Advanced Metrics -->
+
+  <div class="section"><div class="section-label">Advanced Metrics</div></div>
+  <div class="tool-list">
+    <a href="umpire-rankings.html" class="tool-card">
+      <div class="tool-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <line x1="4" y1="24" x2="4" y2="4" stroke="#002D72" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="4" y1="24" x2="25" y2="24" stroke="#002D72" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="7" y1="20" x2="7" y2="18" stroke="#002D72" stroke-width="2" stroke-linecap="round"/>
+          <line x1="12" y1="20" x2="12" y2="13" stroke="#002D72" stroke-width="2" stroke-linecap="round"/>
+          <line x1="17" y1="20" x2="17" y2="16" stroke="#002D72" stroke-width="2" stroke-linecap="round"/>
+          <line x1="22" y1="20" x2="22" y2="9" stroke="#002D72" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Umpire Season Rankings</div>
+        <div class="tool-desc">Season accuracy rankings, missed calls &amp; RE24 bias by umpire</div>
+      </div>
+      <span class="tool-badge">Live</span>
+    </a>
+    <a href="umpire-report.html" class="tool-card">
+      <div class="tool-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <line x1="4" y1="24" x2="4" y2="4" stroke="#002D72" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="4" y1="24" x2="25" y2="24" stroke="#002D72" stroke-width="1.5" stroke-linecap="round"/>
+          <polyline points="6,21 10,16 15,17 20,10" stroke="#002D72" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="6" cy="21" r="1.5" fill="#002D72"/>
+          <circle cx="10" cy="16" r="1.5" fill="#002D72"/>
+          <circle cx="15" cy="17" r="1.5" fill="#002D72"/>
+          <circle cx="20" cy="10" r="1.5" fill="#002D72"/>
+        </svg>
+      </div>
+      <div class="tool-info">
+        <div class="tool-name">Umpire Scouting Report</div>
+        <div class="tool-desc">Multi-game accuracy trends & tendencies by umpire</div>
+      </div>
+      <span class="tool-badge">Live</span>
+    </a>
+  </div>
+
+  <div class="card-footer">
+    <p>Georgia Highlands College</p>
+    <p>Rome, Georgia</p>
+    <p>Powered by TrackMan</p>
+    <div class="footer-title">CHARGERS</div>
+  </div>
+</div>
+<script>
+var SUPABASE_URL = GHC_CONFIG.SUPABASE_URL;
+var SUPABASE_KEY = GHC_CONFIG.SUPABASE_KEY;
+async function loadStats() {
+  try {
+    var r1 = await fetch(SUPABASE_URL + '/rest/v1/pitches?select=id&limit=1',
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Prefer': 'count=exact', 'Range': '0-0' } });
+    var count = r1.headers.get('content-range');
+    if (count) {
+      var total = count.split('/')[1];
+      document.getElementById('dbPitches').textContent = parseInt(total).toLocaleString();
+    }
+    var r2 = await fetch(SUPABASE_URL + '/rest/v1/games?select=game_id',
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } });
+    var games = await r2.json();
+    document.getElementById('dbGames').textContent = Array.isArray(games) ? games.length : '—';
+    var r3 = await fetch(SUPABASE_URL + '/rest/v1/pitches?select=Pitcher&PitcherTeam=eq.'+GHC_CONFIG.TEAM_CODE+'',
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } });
+    var pitchers = await r3.json();
+    var unique = new Set(pitchers.map(function(p) { return p.Pitcher; }));
+    document.getElementById('dbPitchers').textContent = unique.size;
+  } catch(e) {}
+}
+loadStats();
+</script>
+</body>
+</html>
